@@ -1,6 +1,5 @@
 import { userModel } from "../models/MongoDB/userModel.js";
 
-//Genero la accion, no el metodo
 export const findUsers = async () => {
   try {
     const users = await userModel.find();
@@ -26,12 +25,30 @@ export const findUserByEmail = async (email) => {
   }
 };
 export const createUser = async (user) => {
-    //Manejo de errores antes de enviar a la BDD
   try {
     const newUser = await userModel(user);
-    await newUser.save()
+    await newUser.save();
     return newUser;
   } catch (error) {
     throw new Error(error);
   }
 };
+
+export const deleteUser = async (id) => {
+  try {
+    return await userModel.findByIdAndDelete(id);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const updateUser = async (id, data)=>{
+  try {
+    const updatedUser = await userModel.findByIdAndUpdate(id)
+    return updatedUser
+  } catch (error) {
+    throw new Error(error);
+    
+  }
+}
+
