@@ -2,6 +2,9 @@ import local from "passport-local";
 import passport from "passport";
 import GitHubStrategy from "passport-github2";
 import { createCryptPass, validatePass } from "../utils/bcrypt.js";
+import { createUser, findUserByEmail, findUserById } from "../services/userService.js";
+import { createCart } from "../services/cartService.js";
+
 
 const LocalStrategy = local.Strategy; //Estrategia local de auntenticacion
 
@@ -16,23 +19,23 @@ const initializePassport = () => {
         //Validar y crear usuario
         const { first_name, last_name, email, age } = req.body;
         try {
-          const user = await managerUsers.getElementByEmail(username); //Username => email
+          const user = await findUserByEmail(username); //Username => email
           if (user) {
             //Usuario existente
             return done(null, false);
           } else {
             const cryptPass = createCryptPass(password);
-            const cart = await managerCart.addElements();
-            const userCreated = await managerUsers.addElements([
+            const cart = await createCart();
+            const userCreated = await createUser(
               {
                 first_name: first_name,
                 last_name: last_name,
                 email: email,
                 age: age,
                 password: cryptPass,
-                cartId: cart[0]._id,
+                cartId: cart._id,
               },
-            ]);
+            );
             return done(null, userCreated); //Usuario creado correctamente
           }
         } catch (error) {
@@ -47,7 +50,7 @@ const initializePassport = () => {
       { usernameField: "email" },
       async (username, password, done) => {
         try {
-          const user = await managerUsers.getElementByEmail(username);
+          const user = await findUserByEmail(username);
           if (!user) {
             //User not found
             return done(null, false);
@@ -77,7 +80,7 @@ const initializePassport = () => {
 
   //Eliminar la sesion del usuario
   passport.deserializeUser(async (id, done) => {
-    const user = await managerUsers.getElementById(id);
+    const user = await findUserById(id);
     done(null, user);
   });
 
@@ -91,7 +94,7 @@ const initializePassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          const user = await managerUsers.getElementByEmail(
+          const user = await findUserByEmail(
             profile._json.email
           );
           if (user) {
@@ -99,7 +102,7 @@ const initializePassport = () => {
             done(null, user);
           } else {
             const cryptPass = createCryptPass("coder123");
-            const userCreated = await managerUsers.addElements([
+            const userCreated = await createUser(
               {
                 first_name: profile._json.name,
                 last_name: " ",
@@ -107,7 +110,7 @@ const initializePassport = () => {
                 age: 18,
                 password: cryptPass,
               },
-            ]);
+            );
             done(null, userCreated);
           }
         } catch (error) {

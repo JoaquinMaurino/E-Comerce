@@ -1,5 +1,4 @@
 import "dotenv/config.js";
-import cors from "cors";
 import express from "express";
 import cookieParser from "cookie-parser";
 import passport from "passport";
@@ -10,27 +9,17 @@ import initializePassport from './config/passport.js'
 import routerUser from "./routes/userRoutes.js";
 import routerProduct from "./routes/productRoutes.js";
 import routerCart from "./routes/cartRoutes.js";
+import routerSession from "./routes/sessionRoutes.js";
+import routerGithub from "./routes/githubRoutes.js";
 
 //Express execution
 const app = express();
 
-//Frontend Connection (Cors)
-const whiteList = ["http://localhost:3000"];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whiteList.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by Cors"));
-    }
-  },
-};
 
 //Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(cors(corsOptions));
 app.use(
   session({
     //Saves the session into the DB collection => Sessions
@@ -72,3 +61,5 @@ export const server = app.listen(app.get("port"), () => {
 app.use('/user', routerUser)
 app.use('/product', routerProduct)
 app.use('/cart', routerCart)
+app.use('/session', routerSession)
+app.use('/github', routerGithub)

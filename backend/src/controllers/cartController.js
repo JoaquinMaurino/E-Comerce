@@ -120,7 +120,7 @@ export const deleteProductInCart = async (req, res) => {
         const deletedProductArr = prodsInCart.filter(
           (product) => product.productId != pId
         );
-        cart.products = deleteAllProductsInCart;
+        cart.products = deletedProductArr;
         cart.save();
         res.status(200).send(`Product [ID:${pId}] deleted successfully`);
       }

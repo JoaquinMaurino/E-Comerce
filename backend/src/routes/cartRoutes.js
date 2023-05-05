@@ -12,8 +12,8 @@ import {
 
 const routerCart = Router();
 
-//routerCart.get('/', getCartById)
 routerCart.get('/', getCarts)
+routerCart.get('/:cartId', getCartById)
 routerCart.post('/:prodId', addToCart)
 routerCart.put('/', updateAllCartProducts)
 routerCart.put('/:prodId', updateProductQuantity)

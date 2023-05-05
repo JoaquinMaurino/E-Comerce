@@ -28,9 +28,9 @@ export const getUserById = async (req, res) => {
 export const postUser = async (req, res)=>{
   try {
     const newUser = await createUser(req.body)
-    res.status(200).send('New user created successfully')
+    res.status(200).send(`New user created successfully: ${newUser} `)
   } catch (error) {
-    res.status(500).send(error)
+    res.status(500).send(error.message)
   }
 }
 
