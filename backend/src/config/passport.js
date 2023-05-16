@@ -17,7 +17,7 @@ const initializePassport = () => {
       async (req, username, password, done) => {
         //Done = res.status
         //Validar y crear usuario
-        const { first_name, last_name, email, age } = req.body;
+        const { first_name, last_name, email, age, role } = req.body;
         try {
           const user = await findUserByEmail(username); //Username => email
           if (user) {
@@ -32,6 +32,7 @@ const initializePassport = () => {
                 last_name: last_name,
                 email: email,
                 age: age,
+                role: role,
                 password: cryptPass,
                 cartId: cart._id,
               },

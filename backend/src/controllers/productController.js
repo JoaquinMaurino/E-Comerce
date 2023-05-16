@@ -45,3 +45,43 @@ export const getProducts = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+export const getProduct = async (req, res) => {
+  try {
+    const product = await findProductById(req.params.pId);
+    if (product) {
+      res.status(200).send(product);
+    } else {
+      res.status(200).send({ message: "Product not found" });
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+export const addProduct = async (req, res) => {
+  try {
+    const product = await createProduct(req.body);
+    res.status(200).send(product);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+export const updateProductById = async (req, res) => {
+  try {
+    const product = await updateProduct(req.params.pId, req.body);
+    res.status(200).send(`Product updated successfully: ${product}`);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+export const deleteProductById = async (req, res) => {
+  try {
+    await deleteProduct(req.params.pId);
+    res.status(200).send(`Product deleted successfully`);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};

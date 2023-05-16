@@ -21,7 +21,7 @@ export const registertUser = async (req, res, next) => {
 };
 
 
-export const logintUser = async (req, res, next) => {
+export const loginUser = async (req, res, next) => {
   try {
     passport.authenticate("login", (err, user) => {
       if (err) {
@@ -59,7 +59,7 @@ export const destroySession = async (req, res) => {
   }
 };
 
-export const getSession = async (req, res) => {
+export const getSession = async (req, res, next) => {
   try {
     if (req.session.login) {
       res.status(200).send(req.session.user);

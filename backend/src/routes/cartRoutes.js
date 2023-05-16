@@ -1,24 +1,23 @@
 import { Router } from "express";
 import {
   getCartById,
-  getCarts,
   addToCart,
   updateAllCartProducts,
   updateProductQuantity,
   deleteProductInCart,
-  deleteAllProductsInCart,
-  deleteCartById,
+  deleteAllProductsInCart
 } from "../controllers/cartController.js";
+import { roleVerification, passportError } from "../config/middlewares/errorHandler.js";
+
 
 const routerCart = Router();
 
-routerCart.get('/', getCarts)
-routerCart.get('/:cartId', getCartById)
-routerCart.post('/:prodId', addToCart)
-routerCart.put('/', updateAllCartProducts)
-routerCart.put('/:prodId', updateProductQuantity)
-routerCart.delete('/:prodId', deleteProductInCart)
-routerCart.delete('/', deleteAllProductsInCart)
-routerCart.delete('/', deleteCartById)
+
+routerCart.get('/',passportError('login'),roleVerification(['user']), getCartById)
+routerCart.post('/:prodId',passportError('login'),roleVerification(['user']), addToCart)
+routerCart.put('/',passportError('login'),roleVerification(['user']), updateAllCartProducts)
+routerCart.put('/:prodId',passportError('login'),roleVerification(['user']), updateProductQuantity)
+routerCart.delete('/:prodId',passportError('login'),roleVerification(['user']), deleteProductInCart)
+routerCart.delete('/',passportError('login'),roleVerification(['user']), deleteAllProductsInCart)
 
 export default routerCart;
