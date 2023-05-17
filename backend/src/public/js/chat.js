@@ -6,11 +6,17 @@ const email = document.getElementById("email");
 const textMsg = document.getElementById("text");
 const btnClear = document.getElementById("btnClear");
 
+let userData;
+fetch("/session/current").then(response=>response.json()).then(data=>{
+userData = data
+console.log(userData);
+}).catch(error=>console.log(error))
+
 async function renderData(data) {
   document.getElementById("messages").innerHTML = "";
   await data.map((message) => {
     document.getElementById("messages").innerHTML += `<div>
-            <strong>${message.name}</strong> [${message.email}]: ${message.message}
+            <strong>${userData.first_name}</strong> [${userData.email}]: ${message.message}
         </div>`;
   });
 }
@@ -20,21 +26,21 @@ socket.on("allMessages", (data) => {
 });
 
 btnClear.onclick = () => {
-  location.reload()
+  socket.emit("emptyArr", []);
 };
 
 messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  if (authorMsg.value && email.value && textMsg.value) {
+  if (textMsg.value) {
     const newMessage = {
-      name: authorMsg.value,
-      email: email.value,
+      name: userData.first_name,
+      email: userData.email,
       message: textMsg.value,
     };
     textMsg.value = "";
     socket.emit("message", newMessage);
   } else {
     const error = document.getElementById("error");
-    error.innerHTML = `<strong>*All fields must be completed in order to send the message</strong>`;
+    error.innerHTML = `<strong>*An empty message can not be sent</strong>`;
   }
 });

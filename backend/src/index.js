@@ -15,6 +15,7 @@ import routerCart from "./routes/cartRoutes.js";
 import routerSession from "./routes/sessionRoutes.js";
 import routerGithub from "./routes/githubRoutes.js";
 import routerChat from "./routes/chatRoutes.js";
+import routerViews from "./routes/hbsviewsRoutes.js";
 import {Server} from 'socket.io'
 import { createMessage } from "./services/messageService.js";
 
@@ -75,8 +76,8 @@ app.use('/product', routerProduct)
 app.use('/cart', routerCart)
 app.use('/session', routerSession)
 app.use('/github', routerGithub)
-app.use('/', routerChat)
-
+app.use('/chat', routerChat)
+app.use("/", routerViews)
 
 //Socket IO
 export const io = new Server(server)

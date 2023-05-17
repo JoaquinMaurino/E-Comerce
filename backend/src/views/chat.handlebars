@@ -10,15 +10,15 @@
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="css/chat.css" />
+    <link rel="stylesheet" href="css/stylesChat.css" />
   </head>
   <body>
     <h1 class="text-center mt-3">Welcome to the WebSocket´s chat in real time!</h1>
     <div id="containerAll">
       <div id="formContainer">
         <form id="messageForm">
-          <input type="text" id="name" placeholder="Name" />
-          <input type="text" id="email" placeholder="Email address" />
+          {{!-- <input type="text" id="name" placeholder="Name" />
+          <input type="text" id="email" placeholder="Email address" /> --}}
           <input type="text" id="text" placeholder="Message" />
           <div id="btnContainer">
             <Button class="btn btn-primary">Send</Button>
@@ -29,6 +29,7 @@
       </div>
       <div id="messages"></div>
     </div>
+
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js"

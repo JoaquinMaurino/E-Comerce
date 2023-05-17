@@ -1,0 +1,77 @@
+#formContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    max-width: 400px;
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  input{
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 10px;
+    width: 100%;
+    font-size: 16px;
+  }
+
+  svg{
+    margin-right: 20px;
+  }
+  #btnGitHub{
+    background-color: rgb(106, 1, 204);
+    display: flex;
+    justify-content:space-evenly;
+  }
+  #btnGitHub:hover{
+    background-color: rgb(66, 0, 128);
+  }
+
+  #btnSignup{
+    margin-top: 0px;
+  }
+
+  #labelSignup{
+    margin-bottom: 0px;
+    margin-top: 10px;
+  }
+  
+  button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    width: 70%;
+    height: 40px;
+
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  

@@ -29,11 +29,4 @@ export const sendMessage = async (req, res) => {
   }
 };
 
-export const chat = async (req, res) => {
-  console.log(req);
-  try {
-    res.render("chat");
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-};
+
