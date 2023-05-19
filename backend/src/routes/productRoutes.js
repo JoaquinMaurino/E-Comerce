@@ -6,14 +6,14 @@ import {
   updateProductById,
   deleteProductById,
 } from "../controllers/productController.js";
-import { roleVerification,passportError } from "../config/middlewares/errorHandler.js";
+import { roleVerification,isSessionActive } from "../config/middlewares/errorHandler.js";
 
 const routerProduct = Router();
 
 routerProduct.get("/", getProducts);
 routerProduct.get("/:pId", getProduct);
-routerProduct.post("/",passportError('login'), roleVerification(["admin"]), addProduct);
-routerProduct.get("/:pId",passportError('login'), roleVerification(["admin"]), updateProductById);
-routerProduct.get("/:pId",passportError('login'), roleVerification(["admin"]), deleteProductById);
+routerProduct.post("/",isSessionActive, roleVerification(["admin"]), addProduct);
+routerProduct.put("/:pId",isSessionActive, roleVerification(["admin"]), updateProductById);
+routerProduct.delete("/:pId",isSessionActive, roleVerification(["admin"]), deleteProductById);
 
 export default routerProduct;

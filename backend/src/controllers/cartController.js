@@ -1,20 +1,10 @@
-
 import {
   findCartById,
-  findCarts,
-  deleteCart,
   updateCart,
+  deleteFromCart,
 } from "../services/cartService.js";
-
-export const getCarts = async (req, res)=>{
-  try {
-    const carts = await findCarts()
-    res.status(200).send(carts)
-  } catch (error) {
-    res.status(500).send(error);
-    
-  }
-}
+import { createTicket } from "../services/ticketService.js";
+import { updateProduct } from "../services/productService.js";
 
 export const getCartById = async (req, res) => {
   if (req.session.login) {
@@ -30,7 +20,6 @@ export const getCartById = async (req, res) => {
     res.status(401).send("No session active, you must log in");
   }
 };
-
 
 export const addToCart = async (req, res) => {
   if (req.session.login) {
@@ -58,7 +47,6 @@ export const addToCart = async (req, res) => {
   }
 };
 
-
 export const updateAllCartProducts = async (req, res) => {
   if (req.session.login) {
     const cId = req.session.user.cartId;
@@ -75,7 +63,6 @@ export const updateAllCartProducts = async (req, res) => {
     res.status(401).send("No session active, you must log in");
   }
 };
-
 
 export const updateProductQuantity = async (req, res) => {
   if (req.session.login) {
@@ -109,21 +96,7 @@ export const deleteProductInCart = async (req, res) => {
     const cId = req.session.user.cartId;
     const pId = req.params.prodId;
     try {
-      const cart = await findCartById(cId);
-      const prodsInCart = cart.products;
-      const productFound = prodsInCart.find(
-        (product) => product.productId == pId
-      );
-      if (!productFound) {
-        throw new Error("Product not found");
-      } else {
-        const deletedProductArr = prodsInCart.filter(
-          (product) => product.productId != pId
-        );
-        cart.products = deletedProductArr;
-        cart.save();
-        res.status(200).send(`Product [ID:${pId}] deleted successfully`);
-      }
+      await deleteFromCart(cId, pId);
     } catch (error) {
       res.status(500).send(error);
     }
@@ -131,7 +104,6 @@ export const deleteProductInCart = async (req, res) => {
     res.status(401).send("No session active, you must log in");
   }
 };
-
 
 export const deleteAllProductsInCart = async (req, res) => {
   if (req.session.login) {
@@ -149,15 +121,64 @@ export const deleteAllProductsInCart = async (req, res) => {
   }
 };
 
-export const deleteCartById = async (req, res)=> {
+export const finishPurchaseInCart = async (req, res) => {
   if (req.session.login) {
-    const cId = req.session.user.cartId
+    const cId = req.session.user.cartId;
+    const buyer = req.session.user.email;
     try {
-      await deleteCart(cId)
-      res.status(200).send(`Cart [ID:${cId}] deleted successfully`)
+      const cart = await findCartById(cId);
+      const cartPopulate = await cart.populate("products.productId");
+      const products = cartPopulate.products;
+      if (!products) {
+        throw new Error(`Empty cart, add products to purchase`);
+      }
+      let totalAmount = 0;
+      products.forEach((product) => {
+        let stockBefore = product.productId.stock;
+        let stockAfter = stockBefore - product.quantity;
+        const pId = product.productId._id;
+        if (stockAfter >= 0) {
+          totalAmount += product.productId.price * product.quantity;
+          updateProduct(pId, { stock: stockAfter });
+          deleteFromCart(cId, pId);
+        } else {
+          throw new Error(
+            `Insufficient stock of item ${product.productId.name}`
+          );
+        }
+      });
+      if (totalAmount === 0) {
+        res.status(200).send({
+          message: `Unable to complete the purchase due to insufficient stock.`,
+          cart: cart,
+        });
+      }
+      const newTicket = await createTicket({
+        total_amount: totalAmount,
+        buyer_email: buyer,
+      });
+      await newTicket.save();
+      let message;
+      const cartAfter = await findCartById(cId);
+      message =
+        cartAfter.products > 0
+          ? `Purchase completed, excluding out-of-stock products.`
+          : `Purchase completed successfully`;
+      return res.status(200).send({
+        message: message,
+        invoice: newTicket,
+      });
     } catch (error) {
-      res.status(500).send(error)
+      res
+        .status(500)
+        .send({
+          message: "An error occurred during the purchase",
+          error: error.message,
+        });
     }
+  } else {
+    res.status(401).send({
+      message: `No session active, must be loged in to purchase`,
+    });
   }
-}
-
+};

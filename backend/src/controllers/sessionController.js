@@ -59,7 +59,7 @@ export const destroySession = async (req, res) => {
   }
 };
 
-export const getSession = async (req, res, next) => {
+export const getSession = async (req, res) => {
   try {
     if (req.session.login) {
       res.status(200).send(req.session.user);

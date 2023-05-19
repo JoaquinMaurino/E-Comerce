@@ -6,7 +6,6 @@ import {
 } from "../services/userService.js";
 
 export const getUsers = async (req, res) => {
-  //Aca van los paramtros ej. limite, etc.
   try {
     const users = await findUsers();
     res.status(200).send(users);

@@ -1,3 +1,4 @@
+import { json } from "express";
 import { getProducts } from "./productController.js";
 
 export const chatView = async (req, res) => {
@@ -24,7 +25,8 @@ export const registerView = async (req, res) => {
 export const productsView = async (req, res) => {
     try {
         const products = await getProducts()
-        res.render("products", products);
+        const jsonProd = products.json()
+        res.render("products", jsonProd);
     } catch (error) {
       res.status(500).send({ error: error.message });
     }

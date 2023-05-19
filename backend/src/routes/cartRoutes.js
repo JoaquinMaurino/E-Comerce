@@ -5,19 +5,57 @@ import {
   updateAllCartProducts,
   updateProductQuantity,
   deleteProductInCart,
-  deleteAllProductsInCart
+  deleteAllProductsInCart,
+  finishPurchaseInCart,
 } from "../controllers/cartController.js";
-import { roleVerification, passportError } from "../config/middlewares/errorHandler.js";
-
+import {
+  roleVerification,
+  isSessionActive,
+} from "../config/middlewares/errorHandler.js";
 
 const routerCart = Router();
 
+routerCart.get(
+  "/",
+   isSessionActive,
+    roleVerification(["user"]),
+     getCartById);
 
-routerCart.get('/',passportError('login'),roleVerification(['user']), getCartById)
-routerCart.post('/:prodId',passportError('login'),roleVerification(['user']), addToCart)
-routerCart.put('/',passportError('login'),roleVerification(['user']), updateAllCartProducts)
-routerCart.put('/:prodId',passportError('login'),roleVerification(['user']), updateProductQuantity)
-routerCart.delete('/:prodId',passportError('login'),roleVerification(['user']), deleteProductInCart)
-routerCart.delete('/',passportError('login'),roleVerification(['user']), deleteAllProductsInCart)
+routerCart.post(
+  "/:prodId",
+  isSessionActive,
+  roleVerification(["user"]),
+  addToCart);
+
+routerCart.post(
+  "/checkout",
+  isSessionActive,
+  roleVerification(["user"]),
+  finishPurchaseInCart);
+
+routerCart.put(
+  "/",
+  isSessionActive,
+  roleVerification(["user"]),
+  updateAllCartProducts);
+
+routerCart.put(
+  "/:prodId",
+  isSessionActive,
+  roleVerification(["user"]),
+  updateProductQuantity);
+
+routerCart.delete(
+  "/:prodId",
+  isSessionActive,
+  roleVerification(["user"]),
+  deleteProductInCart);
+
+routerCart.delete(
+  "/",
+  isSessionActive,
+  roleVerification(["user"]),
+  deleteAllProductsInCart);
+
 
 export default routerCart;
