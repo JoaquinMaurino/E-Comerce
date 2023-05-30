@@ -18,6 +18,7 @@ import routerChat from "./routes/chatRoutes.js";
 import routerViews from "./routes/hbsviewsRoutes.js";
 import {Server} from 'socket.io'
 import { createMessage } from "./services/messageService.js";
+import { addLogger } from "./utils/logger.js";
 
 
 //Express execution
@@ -27,6 +28,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(addLogger)
 app.use(
   session({
     //Saves the session into the DB collection => Sessions
