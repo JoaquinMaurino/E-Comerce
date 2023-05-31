@@ -16,6 +16,7 @@ import routerSession from "./routes/sessionRoutes.js";
 import routerGithub from "./routes/githubRoutes.js";
 import routerChat from "./routes/chatRoutes.js";
 import routerViews from "./routes/hbsviewsRoutes.js";
+import routerMocking from "./routes/mockingRoutes.js";
 import {Server} from 'socket.io'
 import { createMessage } from "./services/messageService.js";
 import { addLogger } from "./utils/logger.js";
@@ -80,6 +81,7 @@ app.use('/session', routerSession)
 app.use('/github', routerGithub)
 app.use('/chat', routerChat)
 app.use("/", routerViews)
+app.use("/mocking", routerMocking)
 
 //Socket IO
 export const io = new Server(server)

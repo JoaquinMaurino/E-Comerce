@@ -70,3 +70,7 @@ export const getSession = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+export const restorePassword = async (req, res)=>{
+ const {user} = req.body
+}
