@@ -71,6 +71,3 @@ export const getSession = async (req, res) => {
   }
 };
 
-export const restorePassword = async (req, res)=>{
- const {user} = req.body
-}

@@ -12,6 +12,6 @@ routerSession.post("/register", registertUser);
 routerSession.post("/login", loginUser);
 routerSession.get("/logout", destroySession);
 routerSession.get("/current", getSession);
-//routerSession.put("/restore-password", restorePassword)
+//routerSession.put("/password", restorePassword)
 
 export default routerSession;

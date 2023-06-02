@@ -2,7 +2,8 @@ import {
   findUsers,
   findUserById,
   deleteUser,
-  updateUser
+  updateUser,
+  findUserByEmail
 } from "../services/userService.js";
 
 export const getUsers = async (req, res) => {
@@ -46,3 +47,15 @@ export const updateUserById = async (req, res)=>{
   }
 }
 
+export const restorePassword = async (req, res)=>{
+  const {username} = req.body
+  if(!username){
+   return res.status(400).send({message: "Username is required"})
+  }
+  try {
+    const user = await findUserByEmail(username)
+   
+  } catch (error) {
+   res.status(500).send(error);
+  }
+ }

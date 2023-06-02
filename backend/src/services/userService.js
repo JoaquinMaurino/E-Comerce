@@ -44,7 +44,7 @@ export const deleteUser = async (id) => {
 
 export const updateUser = async (id, data)=>{
   try {
-    const updatedUser = await userModel.findByIdAndUpdate(id)
+    const updatedUser = await userModel.findByIdAndUpdate(id, data)
     return updatedUser
   } catch (error) {
     throw new Error(error);
