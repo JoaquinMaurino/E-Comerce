@@ -10,26 +10,15 @@
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href=""/>
+    <link rel="stylesheet" href="css/stylesLogin.css" />
+  </head>
   <body>
     <div id="formContainer">
-      <form action="/restorePassword/:token" method="put">
-        <h2 class="mb-4">Restore Password</h2>
-        <label for="newPassword">Write your new password:</label>
-        <input type="password" id="password" name="newPassword" required />
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            defaultChecked="false"
-            id="flexCheckDefault"
-          />
-          <label class="form-check-label">Show Password</label>
-        </div>
-        <button class="btn btn-primary">Save</button>
-
+      <form action="/emailForm" method="post">
+        <label for="password">Write your email adress:</label>
+        <input type="text" id="email" name="username" required/>
+        <Button>Send</Button>
       </form>
-
     </div>
 
     <script

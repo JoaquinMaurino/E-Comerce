@@ -31,6 +31,10 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "carts",
   },
+  resetPassToken: {
+    type: String,
+    default: ""
+  }
 });
 
 export const userModel = model("users", userSchema);

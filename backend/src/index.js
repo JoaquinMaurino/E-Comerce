@@ -19,7 +19,6 @@ import routerViews from "./routes/hbsviewsRoutes.js";
 import routerMocking from "./routes/mockingRoutes.js";
 import {Server} from 'socket.io'
 import { createMessage } from "./services/messageService.js";
-import { addLogger } from "./utils/logger.js";
 
 
 //Express execution
@@ -29,7 +28,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(addLogger)
+/* app.use(addLogger) */
 app.use(
   session({
     //Saves the session into the DB collection => Sessions
@@ -73,6 +72,7 @@ app.set("view engine", "handlebars");
 app.set("views", path.resolve(__dirname, "./views"));
 
 //Routes
+app.use("/", routerViews)
 app.use("/", express.static(__dirname + "/public"));
 app.use('/user', routerUser)
 app.use('/product', routerProduct)
@@ -80,7 +80,6 @@ app.use('/cart', routerCart)
 app.use('/session', routerSession)
 app.use('/github', routerGithub)
 app.use('/chat', routerChat)
-app.use("/", routerViews)
 app.use("/mocking", routerMocking)
 
 //Socket IO

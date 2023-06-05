@@ -24,6 +24,16 @@ export const findUserByEmail = async (email) => {
     throw new Error(error);
   }
 };
+export const findUserByToken = async (token) => {
+  try {
+    const user = await userModel.findOne({ resetPassToken: token });
+    return user;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+
 export const createUser = async (user) => {
   try {
     const newUser = await userModel(user);
