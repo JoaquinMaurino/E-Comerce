@@ -14,7 +14,7 @@ export const getProducts = async (req, res) => {
     const options = {
       limit: limit ? parseInt(limit) : 10,
       page: page ? parseInt(page) : 1,
-      sort: { price: sort == "asc" ? 1 : -1 },
+      sort: { price: sort == "ASC" ? 1 : -1 },
     };
     const products = await findProductsPaginate(filter, options);
 

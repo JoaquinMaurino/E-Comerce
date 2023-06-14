@@ -34,11 +34,8 @@ export const loginUser = async (req, res, next) => {
       }
       req.session.login = true;
       req.session.user = user;
-      return res
-        .status(200)
-        .send(
-          `Welcome ${req.session.user.first_name}, you loged in as ${req.session.user.role}`
-        );
+      /* return res.redirect("/productsView") */
+      return res.status(200).send({message: `Welcome ${user.first_name}, you logged in as ${user.role}`})
     })(req, res, next);
   } catch (error) {
     res.status(500).send(error);

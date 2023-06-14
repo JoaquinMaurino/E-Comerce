@@ -1,4 +1,4 @@
-import { getProducts } from "./productController.js";
+import { findProducts } from "../services/productService.js";
 
 export const chatView = async (req, res) => {
   try {
@@ -23,9 +23,8 @@ export const registerView = async (req, res) => {
 };
 export const productsView = async (req, res) => {
   try {
-    const products = await getProducts();
-    const jsonProd = products.json();
-    res.render("products", jsonProd);
+    const products = await findProducts();
+    res.render("products", products);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }

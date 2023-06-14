@@ -1,14 +1,16 @@
 import "dotenv/config.js";
 import express from "express";
-import * as path from 'path';
+import * as path from "path";
 import { __dirname } from "./path.js";
-import {engine} from 'express-handlebars'
+import { engine } from "express-handlebars";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import initializePassport from './config/passport.js'
+import initializePassport from "./config/passport.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 import routerUser from "./routes/userRoutes.js";
 import routerProduct from "./routes/productRoutes.js";
 import routerCart from "./routes/cartRoutes.js";
@@ -17,9 +19,9 @@ import routerGithub from "./routes/githubRoutes.js";
 import routerChat from "./routes/chatRoutes.js";
 import routerViews from "./routes/hbsviewsRoutes.js";
 import routerMocking from "./routes/mockingRoutes.js";
-import {Server} from 'socket.io'
+import routerPayment from "./routes/paymentTestRoutes.js";
+import { Server } from "socket.io";
 import { createMessage } from "./services/messageService.js";
-
 
 //Express execution
 const app = express();
@@ -35,7 +37,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl: process.env.URLMONGODB,
       mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-      ttl: 3600
+      ttl: 3600,
     }),
     secret: process.env.SESSION_SECRET,
     resave: true, //Allows to close or refresh and keep active session
@@ -71,20 +73,35 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", path.resolve(__dirname, "./views"));
 
+//Swagger config
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Ecomerce",
+      description: "Ecomerce Node.js",
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+const specs = swaggerJSDoc(swaggerOptions);
+
 //Routes
-app.use("/", routerViews)
+app.use("/", routerViews);
 app.use("/", express.static(__dirname + "/public"));
-app.use('/user', routerUser)
-app.use('/product', routerProduct)
-app.use('/cart', routerCart)
-app.use('/session', routerSession)
-app.use('/github', routerGithub)
-app.use('/chat', routerChat)
-app.use("/mocking", routerMocking)
+app.use("/user", routerUser);
+app.use("/product", routerProduct);
+app.use("/cart", routerCart);
+app.use("/session", routerSession);
+app.use("/github", routerGithub);
+app.use("/chat", routerChat);
+app.use("/mocking", routerMocking);
+app.use("/payment", routerPayment);
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 //Socket IO
-export const io = new Server(server)
-let messagesArr = []
+export const io = new Server(server);
+let messagesArr = [];
 io.on("connection", async (socket) => {
   console.log("Socket connected");
   socket.emit("allMessages", messagesArr);

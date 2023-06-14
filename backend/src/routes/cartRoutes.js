@@ -18,7 +18,7 @@ const routerCart = Router();
 routerCart.get(
   "/",
    isSessionActive,
-    roleVerification(["user"]),
+    roleVerification(["admin"]),
      getCartById);
 
 routerCart.post(

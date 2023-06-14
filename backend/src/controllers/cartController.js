@@ -14,7 +14,7 @@ export const getCartById = async (req, res) => {
       const cartPopulate = await cart.populate("products.productId");
       res.status(200).send(cartPopulate);
     } catch (error) {
-      res.status(500).send(error);
+      res.status(500).send({message: error});
     }
   } else {
     res.status(401).send("No session active, you must log in");

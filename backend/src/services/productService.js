@@ -9,6 +9,14 @@ export const createProduct = async (product) => {
       throw new Error(error);
     }
   };
+
+  export const findProducts = async ()=>{
+    try {
+      return await productModel.find()
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
   
   export const findProductsPaginate = async (filter, options) => {
     try {
