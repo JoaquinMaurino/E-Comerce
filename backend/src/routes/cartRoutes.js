@@ -9,8 +9,8 @@ import {
   finishPurchaseInCart,
 } from "../controllers/cartController.js";
 import {
-  roleVerification,
   isSessionActive,
+  roleVerification,
 } from "../config/middlewares/errorHandler.js";
 
 const routerCart = Router();
@@ -18,7 +18,7 @@ const routerCart = Router();
 routerCart.get(
   "/",
    isSessionActive,
-    roleVerification(["admin"]),
+    roleVerification(["user"]),
      getCartById);
 
 routerCart.post(

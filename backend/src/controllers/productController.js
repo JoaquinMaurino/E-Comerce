@@ -64,7 +64,7 @@ export const addProduct = async (req, res) => {
     const product = await createProduct(req.body);
     res.status(200).send(product);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send({message: error});
   }
 };
 

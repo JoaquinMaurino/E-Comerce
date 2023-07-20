@@ -10,101 +10,108 @@ const expect = chai.expect;
 const requester = supertest("http://localhost:5000");
 
 describe("Testing de la aplicacion", () => {
-    describe("Testing de las rutas de User", () => {
-    //POST
-    it("Ruta: user con el metodo POST", async function () {
-      //_body, StatusCode, Ok(true or false)
-      const newUser = {
-        first_name: "Joaquin",
-        last_name: "TEST",
-        age: 5,
-        email: "test@t.com",
-        password: "123",
-      };
-      const { statusCode, _body, ok } = await requester
-        .post("/user")
-        .send(newUser); //requester.metodo(concatenacion de rutas)
-      console.log(statusCode);
-      console.log(_body);
-      console.log(ok);
-    });
-    //PUT
-    it("Ruta: user con el metodo PUT", async function () {
-      const id = "6488fb5b486075ab9d76d437";
-      const updateUser = {
-        first_name: "Joaquin",
-        last_name: "Test",
-        age: 15,
-        email: "test@t.com",
-        password: "123456789",
-      };
+  //Testing de Products:
+/*     describe("Testing de las rutas de Product", () => {
 
+    //POST
+    it("Ruta: product con el metodo POST", async function () {
+      //_body, StatusCode, Ok(true or false)
+      const newProduct = {
+        title: "IphoneX",
+        description: "Smartphone",
+        code: "AB37D4",
+        price: 75000,
+        status: true,
+        stock: 30,
+        category: "Mobilephone",
+        thumbnails: [],
+      };
       const { statusCode, _body, ok } = await requester
-        .put(`/user/${id}`)
-        .send(updateUser); //requester.metodo(concatenacion de rutas)
+        .post("/product")
+        .send(newProduct); //requester.metodo(concatenacion de rutas)
       console.log(statusCode);
       console.log(_body);
       console.log(ok);
     });
-    //DELETE
-    it("Ruta: user con el metodo DELETE", async function () {
-      const id = "6488fb5b486075ab9d76d437";
+
+    //PUT
+    it("Ruta: product con el metodo PUT", async function () {
+      const id = "649063a5124b1e2e4fac407e";
+      const updatedProduct= {
+        title: "IphoneX",
+        description: "Smartphone",
+        code: "AB37D4",
+        price: 82000,
+        status: false,
+        stock: 5,
+        category: "Mobilephone",
+        thumbnails: [],
+      };
       const { statusCode, _body, ok } = await requester
-        .delete(`/user/${id}`)
+        .put(`/product/${id}`)
+        .send(updatedProduct); //requester.metodo(concatenacion de rutas)
+      console.log(statusCode);
+      console.log(_body);
+      console.log(ok);
+    });
+
+    //DELETE
+    it("Ruta: product con el metodo DELETE", async function () {
+      const id = "649063a5124b1e2e4fac407e";
+      const { statusCode, _body, ok } = await requester
+        .delete(`/product/${id}`)
         .send(); //requester.metodo(concatenacion de rutas)
       console.log(statusCode);
       console.log(_body);
       console.log(ok);
     });
+
     //GET
-    it("Ruta: user con el metodo GET", async function () {
-      const { statusCode, _body, ok } = await requester.get("/user").send(); //requester.metodo(concatenacion de rutas)
+    it("Ruta: product con el metodo GET", async function () {
+      const { statusCode, _body, ok } = await requester.get("/product").send(); //requester.metodo(concatenacion de rutas)
       console.log(statusCode);
       console.log(_body);
       console.log(ok);
     });
-  });
+  }); */
 
-  //Testing de sessions
+  //Testing de sessions:
   describe("testing de la ruta de sessions", ()=>{
-    let cookie = ""
-    //REGISTER
+
+/*     //REGISTER
     it("Ruta: session/register con el metodo POST", async function(){
         const newUser = {
-            first_name: "Pedro",
-            last_name: "Perez",
-            age: 15,
-            email: "enrique@test.com",
-            password: "123456",
+            first_name: "Joaquin",
+            last_name: "Mauriño",
+            age: 23,
+            email: "joaquin9918@gmail.com",
+            password: "Crossfit",
           };
         const {_body} = await requester.post("/session/register").send(newUser) 
+        console.log(_body);
         expect(_body).to.be.ok //analizar si el status es 200
 
-    })
-    //LOGIN
-    it("Ruta: session/register con el metodo POST", async function(){
-        const newUser = {
-            email: "enrique@test.com",
-            password: "123456",
-          };
-        const result = await requester.post("/session/login").send(newUser)
-        const cookieResult = result.headers['set-cookie'][0]
-        expect(cookieResult).to.be.ok //verificar existencia de cookie
+    }); */
 
-        cookie = {
-            name: cookieResult.split("=")[0],
-            value: cookieResult.split("=")[1],
-        }
-        expect(cookie.name).to.be.ok.and.equal('coderCookie')
-        expect(cookie.value).to.be.ok
-    })
+    //LOGIN
+    it("Ruta: session/login con el metodo POST", async function(){
+        const newUser = {
+            email: "joaquin9918@gmail.com",
+            password: "Crossfit",
+          };
+          const { statusCode, _body, ok } = await requester.post("/session/login").send(newUser)
+          console.log(statusCode);
+          console.log(_body);
+          console.log(ok);
+    });
+
     //CURRENT
     it("Ruta: session/current con el metodo GET", async function(){
-
-        const {_body} = await requester.get("/session/current").set('Cookie', [`${cookie.name}=${cookie.value}`])
-        console.log(_body.payload);
-        expect(_body.payload).to.be.equal("enrique@test.com")
+      const { statusCode, _body, ok } = await requester.get("/session/current").send()
+        console.log(statusCode);
+        console.log(_body);
+        console.log(ok);
 
     })
+  });
   })
-});

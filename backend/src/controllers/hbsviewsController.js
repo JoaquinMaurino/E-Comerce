@@ -24,7 +24,7 @@ export const registerView = async (req, res) => {
 export const productsView = async (req, res) => {
   try {
     const products = await findProducts();
-    res.render("products", products);
+    res.render("products", JSON.parse(products));
   } catch (error) {
     res.status(500).send({ error: error.message });
   }

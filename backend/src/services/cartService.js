@@ -49,13 +49,13 @@ export const deleteFromCart = async (cartId, prodId) => {
     const cart = await cartModel.findById(cartId);
     const prodsInCart = cart.products;
     const productFound = prodsInCart.find(
-      (product) => product.productId == prodId
+      (product) => product.productId.equals(prodId)
     );
     if (!productFound) {
       throw new Error("Product not found");
     } else {
       const deletedProductArr = prodsInCart.filter(
-        (product) => product.productId != pId
+        (product) => !product.productId.equals(prodId)
       );
       cart.products = deletedProductArr;
       cart.save();

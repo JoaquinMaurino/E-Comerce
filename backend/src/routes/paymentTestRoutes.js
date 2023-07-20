@@ -8,3 +8,4 @@ routerPayment.get("/success", paymentSuccess)
 routerPayment.get("/failure", paymentFailure)
 
 export default routerPayment
+

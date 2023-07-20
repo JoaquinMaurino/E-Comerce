@@ -35,7 +35,7 @@ export const loginUser = async (req, res, next) => {
       req.session.login = true;
       req.session.user = user;
       /* return res.redirect("/productsView") */
-      return res.status(200).send({message: `Welcome ${user.first_name}, you logged in as ${user.role}`})
+      return res.status(200).send({message: `Welcome ${user.first_name}, you loged in as ${user.role}`})
     })(req, res, next);
   } catch (error) {
     res.status(500).send(error);
