@@ -101,15 +101,13 @@ export const deleteAllProductsInCart = async (req, res) => {
 };
 
 export const finishPurchaseInCart = async (req, res) => {
+
   const cId = req.session.user.cartId;
   const buyer = req.session.user.email;
 
   try {
     const cart = await findCartById(cId);
-    const cartPopulate = await cart.populate({
-      path: "products.productId",
-      model: productModel,
-    });
+    const cartPopulate = await cart.populate("products.productId");
     const products = cartPopulate.products;
 
     if (!products.length) {
@@ -119,25 +117,31 @@ export const finishPurchaseInCart = async (req, res) => {
     let totalAmount = 0;
 
     products.forEach((product) => {
-      let stockBefore = product.productId.stock;
-      let stockAfter = stockBefore - product.quantity;
+
       const pId = product.productId._id;
+
+      let stockBefore = parseInt(product.productId.stock);
+      let stockAfter = stockBefore - product.quantity;
 
       if (stockAfter >= 0) {
         totalAmount += product.productId.price * product.quantity;
+
         updateProduct(pId, { stock: stockAfter });
+
         deleteFromCart(cId, pId);
+
       } else {
-        throw new Error(`Insufficient stock of item ${product.productId.name}`);
+        deleteFromCart(cId, pId);
+        throw new Error(`Insufficient stock of item ${product.productId}`);
       }
     });
 
-    if (totalAmount === 0) {
+   if (totalAmount === 0) {
       res.status(401).send({
-        message: `Unable to complete the purchase due to insufficient stock.`,
+        message: `Purchase cancelled. Unable to complete the purchase due to insufficient stock.`,
         cart: cart,
       });
-    }
+    } 
 
     const newTicket = await createTicket({
       total_amount: totalAmount,

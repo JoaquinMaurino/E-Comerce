@@ -3,8 +3,8 @@ import { ticketModel } from "../models/MongoDB/ticketModel.js";
 export const createTicket = async (ticket)=>{
     try {
         const newTicket = await ticketModel(ticket)
-        newTicket.save()
-        return newTicket
+        const savedTicket = await newTicket.save()
+        return savedTicket
     } catch (error) {
         throw new Error(error)
     }

@@ -28,7 +28,7 @@ routerCart.post(
   addToCart);
 
 routerCart.post(
-  "/checkout",
+  "/",
   isSessionActive,
   roleVerification(["user"]),
   finishPurchaseInCart);
