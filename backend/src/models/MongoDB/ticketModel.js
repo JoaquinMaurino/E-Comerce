@@ -6,7 +6,7 @@ const ticketSchema = new Schema({
         unique: true,
         index: true, 
         required: true, 
-        default: new Date().valueOf()
+        default: ()=>{return new Date().valueOf()}
     },
     purhcase_datetime: {
         type: Date,

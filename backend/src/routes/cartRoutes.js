@@ -15,47 +15,48 @@ import {
 
 const routerCart = Router();
 
-routerCart.get(
-  "/",
-   isSessionActive,
-    roleVerification(["user"]),
-     getCartById);
+routerCart.get("/", isSessionActive, roleVerification(["user"]), getCartById);
+
+routerCart.post(
+  "/checkout",
+  isSessionActive,
+  roleVerification(["user"]),
+  finishPurchaseInCart
+);
 
 routerCart.post(
   "/:prodId",
   isSessionActive,
   roleVerification(["user"]),
-  addToCart);
-
-routerCart.post(
-  "/",
-  isSessionActive,
-  roleVerification(["user"]),
-  finishPurchaseInCart);
+  addToCart
+);
 
 routerCart.put(
   "/",
   isSessionActive,
   roleVerification(["user"]),
-  updateAllCartProducts);
+  updateAllCartProducts
+);
 
 routerCart.put(
   "/:prodId",
   isSessionActive,
   roleVerification(["user"]),
-  updateProductQuantity);
+  updateProductQuantity
+);
 
 routerCart.delete(
   "/:prodId",
   isSessionActive,
   roleVerification(["user"]),
-  deleteProductInCart);
+  deleteProductInCart
+);
 
 routerCart.delete(
   "/",
   isSessionActive,
   roleVerification(["user"]),
-  deleteAllProductsInCart);
-
+  deleteAllProductsInCart
+);
 
 export default routerCart;
